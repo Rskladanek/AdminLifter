@@ -1,5 +1,6 @@
 import servicemanager
 import win32serviceutil
+import sys
 
 
 from modules.blackhatService import BlackHatService
