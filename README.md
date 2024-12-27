@@ -1,89 +1,75 @@
 # AdminLifter - README
 
-## Overview
-**BlackHatService** is a Windows-based tool designed for privilege escalation by leveraging service functionalities and executing VBScript files at regular intervals. It serves as a framework to demonstrate privilege escalation techniques and explore potential security vulnerabilities.
+## 📌 Overview
+**AdminLifter** is a Windows-based tool designed for privilege escalation. It leverages service functionalities and VBScript execution to demonstrate security techniques and explore vulnerabilities.
 
-### Work in Progress
-This project is currently under development. Features and documentation will be updated as progress is made. Testing and debugging are particularly challenging, as the tool interacts with critical Windows services. 
+---
 
-### Challenges
-Implementing and testing **BlackHatService** is inherently complex due to the nature of the privilege escalation process. Thorough testing requires an environment that simulates a secure system without risking a production machine. To address this, efforts are being made to work around security mechanisms on a virtual machine. This setup allows testing under controlled conditions, but it also reveals the sophisticated layers of security that must be bypassed.
+## 🚧 Work in Progress
+This project is under active development. Features and documentation will be updated as progress is made.
 
-Some of the hurdles include:
+### Key Challenges:
 - Bypassing service permission restrictions.
 - Ensuring reliable execution of VBScript files.
-- Navigating virtual machine-specific constraints, which can impact realistic behavior.
+- Navigating virtual machine constraints for realistic testing.
 
 ---
 
-## How It Works
+## 🛠️ How It Works
+### 1. **Batch File (`bypass.bat`):**
+- Allows running applications that require admin privileges without a UAC prompt.
+- **Usage:** Drag and drop an executable onto `bypass.bat`. It will run with user-level privileges.
 
-The project consists of two main components: 
+```batch
+cmd /min /C "set __COMPAT_LAYER=runasinvoker && start "" "%1""
+```
 
-1. **The VBScript (`bhservice_task.vbs`):**
-   - Gathers detailed information about the operating system, computer, and hardware.
-   - Outputs the collected information to a file located in `C:\windows\temp\bhpoutput.txt`.
+### 2. **VBScript (`bhservice_task.vbs`):**
+- Gathers system information and logs it to `C:\windows\temp\bhpoutput.txt`.
+- **Features:**
+  - Extracts OS, memory, hardware, and BIOS details using WMI.
 
-   **Key Features of `bhservice_task.vbs`:**
-   - Uses WMI (Windows Management Instrumentation) to extract system details.
-   - Writes information such as OS version, memory statistics, BIOS version, and processor details.
+### 3. **Python Service (`main.py`):**
+- Implements a Windows service using Python.
+- Periodically executes the VBScript.
 
-2. **The Python Service (`main.py`):**
-   - A Windows service implemented using Python and the `pywin32` library.
-   - Periodically copies the VBScript to a target directory and executes it using `cscript.exe`.
-   - Deletes the VBScript after execution to reduce its footprint.
-
----
-
-## File Structure
- ├── .venv # Virtual environment 
- ├── .gitignore # Git ignore file 
- ├── bhservice_task.vbs # VBScript executed by the service 
- ├── main.py # Python service code 
- ├── README.md # Documentation 
- ├── requirements.txt # Python dependencies
-
- ---
-
-## Python Service Details (`main.py`)
-
-- **Service Name:** BlackHatService
-- **Service Description:** Runs a VBScript at regular intervals. 
-- **Core Functionality:**
-  1. Initializes a Windows service that uses `win32serviceutil`.
-  2. Copies `bhservice_task.vbs` from the source directory to the target directory (`C:\Windows\TEMP`).
-  3. Executes the VBScript using `cscript.exe`.
-  4. Deletes the VBScript after execution to minimize its presence.
+**Key Steps:**
+1. Copies `bhservice_task.vbs` to `C:\Windows\TEMP`.
+2. Executes it with `cscript.exe`.
+3. Deletes the script after execution.
 
 ---
 
-## VBScript Details (`bhservice_task.vbs`)
-
-The script uses WMI to query system information and writes it to a log file (`C:\windows\temp\bhpoutput.txt`). Below are the categories of information retrieved:
-- **Operating System:**
-  - Name, version, service pack, manufacturer, Windows directory, locale.
-- **Memory:**
-  - Free physical memory, total virtual memory, available virtual memory, page file size.
-- **Computer System:**
-  - Name, manufacturer, model, time zone, total physical memory.
-- **Processor:**
-  - Architecture, description.
-- **BIOS:**
-  - Version.
+## 📂 File Structure
+```
+├── bypass.bat                # Batch file for bypassing admin privileges
+├── main.py                   # Entry point for the Python service
+├── modules/                  # Directory for additional scripts
+│   ├── bhservice_task.vbs    # VBScript for system info gathering
+│   └── blackhatService.py    # Python service implementation
+├── README.md                 # Documentation (this file)
+├── requirements.txt          # Python dependencies
+```
 
 ---
 
-## Requirements
-- Python 3.x
-- `pywin32` library (install via `pip install pywin32`)
+## 📝 Requirements
+- **Python 3.x**
+- `pywin32` library (install with `pip install pywin32`)
 
 ### Additional Setup
-- Ensure the VBScript is placed in the source directory (`C:\Users\tim\work`).
-- Run the service with administrator privileges to access required system functions.
+- Place the VBScript in the `modules/` directory.
+- Run the Python service with administrator privileges.
 
 ---
 
-## Disclaimer
-This tool is for educational purposes only. Unauthorized use is strictly prohibited. The author does not condone malicious activity and is not responsible for misuse of this tool.
+## 🚀 Usage
+1. **Privilege Bypass:**
+   - Drag and drop an executable onto `bypass.bat`.
+2. **System Information Gathering:**
+   - Use the Python service to periodically gather system details.
 
 ---
+
+## ⚠️ Disclaimer
+This tool is for educational purposes only. Unauthorized use is strictly prohibited. The author is not responsible for misuse of this tool.
