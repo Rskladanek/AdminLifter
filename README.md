@@ -96,5 +96,5 @@ python main.py remove
 
 ---
 
-##⚠️ Disclaimer
+## ⚠️ Disclaimer
 This tool is for educational and testing purposes only. Unauthorized or malicious use is strictly prohibited. The author and contributors bear no responsibility for the consequences of unauthorized use. Use responsibly and within the bounds of applicable law.
