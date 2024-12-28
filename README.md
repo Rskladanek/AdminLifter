@@ -30,6 +30,7 @@ This project is **completed**. No further updates or new features are planned.
 ```batch
 :: Bypass script for older Windows versions (runasinvoker trick)
 cmd /min /C "set __COMPAT_LAYER=runasinvoker && start "" "%1""
+```
 
 ## 2. VBScript (`bhservice_task.vbs`)
 
